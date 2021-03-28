@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import {useSelector} from 'react-redux'
 import {store} from '../../index';
 import logo from '../../logo.svg'
+import './specificPokemon.scss'
 import {fetchUniquePokemons} from '../../Api'
 
 function SpecificPokemon() {

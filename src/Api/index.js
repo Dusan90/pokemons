@@ -1,6 +1,8 @@
 import axios from 'axios'
 import {fetchPokemonsRequest, fetchPokemonsSuccess, fetchPokemonsFailuere} from '../Redux/Actions/fetchAllPokemons'
 import {fetchUniquePokemonsRequest, fetchUniquePokemonsSuccess, fetchUniquePokemonsFailuere} from '../Redux/Actions/fetchSpecificPokemon'
+import {fetchTypePokemonsRequest, fetchTypePokemonsSuccess, fetchTypePokemonsFailuere} from '../Redux/Actions/fetchSpecificPokemon/fetchPokemonbyType'
+import {fetchMoreUniquePokemonsRequest, fetchMoreUniquePokemonsSuccess, fetchMoreUniquePokemonsFailuere} from '../Redux/Actions/fetchSpecificPokemon/fetchMoreInfo'
 
 export function fetchPokemons() {
     return function (dispatch){        
@@ -39,6 +41,43 @@ export function fetchUniquePokemons(name) {
             
             const errorMsg = error.message
             dispatch(fetchUniquePokemonsFailuere(errorMsg))
+        })
+    }
+}
+
+
+export function fetchTypePokemons(url) {
+    return function (dispatch){        
+        dispatch(fetchTypePokemonsRequest())
+        axios.get(`${url}`)
+        
+        .then(response =>{
+            const Type = response.data
+            dispatch(fetchTypePokemonsSuccess(Type))
+        })
+        .catch((error) =>{
+            console.log(error);
+            
+            const errorMsg = error.message
+            dispatch(fetchTypePokemonsFailuere(errorMsg))
+        })
+    }
+}
+
+export function fetchMoreUniquePokemons(url) {
+    return function (dispatch){        
+        dispatch(fetchMoreUniquePokemonsRequest())
+        axios.get(`${url}`)
+        
+        .then(response =>{
+            const MoreInfo = response.data
+            dispatch(fetchMoreUniquePokemonsSuccess(MoreInfo))
+        })
+        .catch((error) =>{
+            console.log(error);
+            
+            const errorMsg = error.message
+            dispatch(fetchMoreUniquePokemonsFailuere(errorMsg))
         })
     }
 }
