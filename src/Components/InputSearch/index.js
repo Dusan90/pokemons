@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import './inputSearch.scss'
 import { FcSearch } from "react-icons/fc";
 
 function index({handleChange, value}) {
