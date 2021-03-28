@@ -2,10 +2,27 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {createStore, applyMiddleware, compose} from 'redux'
+import {Provider} from 'react-redux'
+import rootReducers from './Redux/Reducers'
+import thunk from 'redux-thunk'
+
+const devTools =
+  // eslint-disable-next-line no-undef
+  process.env.NODE_ENV !== "production" && window.__REDUX_DEVTOOLS_EXTENSION__
+    ? window.__REDUX_DEVTOOLS_EXTENSION__ &&
+      window.__REDUX_DEVTOOLS_EXTENSION__()
+    : (a) => a;
+export const store = createStore(
+  rootReducers,
+  compose(applyMiddleware(thunk), devTools)
+  )
 
 ReactDOM.render(
   <React.StrictMode>
+     <Provider store={store}>
     <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
