@@ -80,7 +80,7 @@
       .pokemonInfo {
         width: 250px;
         img {
-          width: 250px;
+          width: 250px !important;
         }
       }
     }
@@ -91,5 +91,17 @@
     height: 40px;
     padding-top: 10px;
     text-transform: capitalize;
+  }
+  button {
+    background: darkslategray;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 7px 10px;
+    margin-top: 20px;
+    margin-left: 5px;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }

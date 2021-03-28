@@ -1,17 +1,41 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useParams} from "react-router-dom";
 import {useSelector} from 'react-redux'
 import {store} from '../../index';
 import logo from '../../logo.svg'
 import './specificPokemon.scss'
 import {fetchUniquePokemons} from '../../Api'
+import {fetchMoreUniquePokemons} from '../../Api'
+import {fetchTypePokemons} from '../../Api'
+import MoreInfo from './MoreInfo'
+import MoreByType from './MoreByType'
+import Button from '../../Components/Button'
 
 function SpecificPokemon() {
     const pokemonUniqueData = useSelector((state) => state.UniquePokemonReducer);
     const params = useParams()
     useEffect(() =>{store.dispatch(fetchUniquePokemons(params.id))}, [params.id])
+    const [clickedButton, setClickedButton] = useState(false)
+    const [TypeButton, setTypeButton] = useState(false)
     const pokemon = pokemonUniqueData && pokemonUniqueData['pokemon']
+    useEffect(() => {
+        clickedButton && store.dispatch(fetchMoreUniquePokemons(pokemon['species']['url']))
+    })
 
+    const handleClick = (url, callback) =>{
+        store.dispatch(fetchMoreUniquePokemons(url))
+        callback(true)
+    }
+
+    const typeHandleClick = (url, callback) => {
+        store.dispatch(fetchTypePokemons(url))
+        callback(true)
+    }
+
+    const fetchDataForRedirect = (id) =>{
+        store.dispatch(fetchUniquePokemons(id))
+        setClickedButton(false)
+    }
     return (
         pokemonUniqueData['loading'] ? (
             <img className='App-logo' src={logo} alt='loading...'/>) : pokemonUniqueData['error'] ? (
@@ -46,7 +70,11 @@ function SpecificPokemon() {
                         </div>
                       </div>  }
                 </div>
-
+                <Button  clickedButton={TypeButton} title={'Type'} handleClick={() => typeHandleClick(pokemon['types'][0]['type']['url'], setTypeButton)}/>
+                <Button  clickedButton={clickedButton} title={'More Info'} handleClick={() => handleClick(pokemon['species']['url'], setClickedButton)}/>
+                <MoreByType buttonTypeClicked={TypeButton} fetchDataForRedirect={fetchDataForRedirect}/> 
+                <MoreInfo buttonClicked={clickedButton}/>
+               
                </div> 
     )
 }
